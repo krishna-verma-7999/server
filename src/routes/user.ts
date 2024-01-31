@@ -1,11 +1,19 @@
 import express from "express";
-import { getAllUsersController, getUserController } from "../controllers/user";
+import {
+  getAllUsersController,
+  getUserController,
+  getUsersByToken,
+} from "../controllers/user";
 
 import { isAuthenticated } from "../middleware";
+import { createTaskController, getTodoController } from "../controllers/task";
 
 const router = express.Router();
 
-router.get("/getAllUsers", isAuthenticated, getAllUsersController);
-router.get("/getUser/:userId", isAuthenticated, getUserController);
+router.post("/auth/user", isAuthenticated, getUsersByToken);
+router.post("/auth/getAllUsers", isAuthenticated, getAllUsersController);
+router.post("/auth/createTask", isAuthenticated, createTaskController);
+
+router.post("/auth/getAllTask", isAuthenticated, getTodoController);
 
 export default router;

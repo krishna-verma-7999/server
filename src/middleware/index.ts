@@ -1,4 +1,4 @@
-import { getUserById } from "../db/userModel";
+import { getUserById } from "../db/userQueries";
 import express from "express";
 import jwt from "jsonwebtoken";
 
@@ -8,10 +8,8 @@ export const isAuthenticated = async (
   next: express.NextFunction
 ) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1];
-
     jwt.verify(
-      token,
+      req.body.token,
       process.env.JWT_SECRET,
       (err: Error, decoded: { id: string }) => {
         // console.log(decoded);
