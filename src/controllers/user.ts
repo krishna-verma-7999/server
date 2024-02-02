@@ -19,9 +19,10 @@ export const getUserController = async (
   res: express.Response
 ) => {
   try {
-    const { userId } = req.params;
-    const user = await getUserById(userId);
-    // console.log(userId, user);
+    const { id } = req.body;
+    // console.log(req.body);
+    const user = await getUserById(id);
+    // console.log(user);
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);

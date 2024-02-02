@@ -22,4 +22,6 @@ router.post("/auth/getAllTask", isAuthenticated, getTodoController);
 
 router.post("/auth/updateTask", isAuthenticated, updateTaskController);
 
+router.post("/auth/getUserById", isAuthenticated, getUserController);
+
 export default router;

@@ -12,6 +12,7 @@ export const createTaskController = async (
         title: req.body.title,
         timeEstimate: req.body.timeEstimate,
         deadline: req.body.deadline,
+        priority: req.body.priority,
         createdBy: req.body.userId,
         assignedTo: req.body.assignedTo,
         status: "in_progress",
@@ -19,6 +20,7 @@ export const createTaskController = async (
     } else {
       task = await createTask({
         title: req.body.title,
+        priority: req.body.priority,
         timeEstimate: req.body.timeEstimate,
         deadline: req.body.deadline,
         createdBy: req.body.userId,
