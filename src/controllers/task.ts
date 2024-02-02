@@ -1,4 +1,4 @@
-import { createTask, getAllTask } from "../db/taskQueries";
+import { createTask, getAllTask, updateTaskStatus } from "../db/taskQueries";
 import express from "express";
 
 export const createTaskController = async (
@@ -6,7 +6,6 @@ export const createTaskController = async (
   res: express.Response
 ) => {
   try {
-    console.log(req.body);
     let task;
     if (req.body.assignedTo) {
       task = await createTask({
@@ -46,6 +45,26 @@ export const getTodoController = async (
     return res.status(200).json(tasks);
   } catch (error) {
     console.log("[Create Task Error : ]", error);
+    return res.status(400).send(error);
+  }
+};
+
+export const updateTaskController = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    console.log(req.body);
+    const tasks = await updateTaskStatus(
+      req.body.updatedStatus,
+      req.body.assignedId
+    );
+    // console.log(tasks);
+    return res
+      .status(200)
+      .json({ status: 200, message: "Task status updated" });
+  } catch (error) {
+    console.log("[Update Task Error] : ", error);
     return res.status(400).send(error);
   }
 };

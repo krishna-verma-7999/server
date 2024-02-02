@@ -8,8 +8,10 @@ export const isAuthenticated = async (
   next: express.NextFunction
 ) => {
   try {
+    const token = req.headers["authorization"].split(" ")[1];
+
     jwt.verify(
-      req.body.token,
+      token,
       process.env.JWT_SECRET,
       (err: Error, decoded: { id: string }) => {
         // console.log(decoded);

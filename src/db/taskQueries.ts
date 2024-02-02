@@ -9,3 +9,10 @@ export const createTask = async (values: Record<string, any>) => {
 export const getAllTask = async () => {
   return await TaskModel.find();
 };
+
+export const updateTaskStatus = async (status: string, id: string) => {
+  return await TaskModel.findOneAndUpdate(
+    { assignedTo: id },
+    { status: status }
+  );
+};

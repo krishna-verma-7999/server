@@ -7,7 +7,6 @@ export const getAllUsersController = async (
 ) => {
   try {
     const users = await getAllUsers();
-    console.log(users);
     return res.status(200).json(users);
   } catch (error) {
     console.log(error);
@@ -36,13 +35,11 @@ export const getUsersByToken = async (
 ) => {
   try {
     const { userId } = req.body;
-    console.log(userId);
     const data = await getUserById(userId);
 
     if (!data) {
       return res.status(404).send("user is not exists");
     }
-    console.log(data);
     return res.status(200).send(data);
   } catch (error) {
     console.log(error);

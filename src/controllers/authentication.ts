@@ -15,7 +15,9 @@ export const register = async (req: express.Request, res: express.Response) => {
     // console.log(existingUser);
 
     if (existingUser) {
-      return res.status(409).send("user already exists");
+      return res
+        .status(200)
+        .json({ status: 409, message: "User already exists" });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,13 +37,15 @@ export const register = async (req: express.Request, res: express.Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    createUser({
+    const newUser = await createUser({
       name,
       email,
       password: hashedPassword,
     });
 
-    return res.status(201).send("User created Successfully");
+    return res
+      .status(200)
+      .json({ message: "User created successfully", status: 200 });
   } catch (error) {
     console.log(error);
     return res.status(400).send(error);
@@ -58,25 +62,29 @@ export const login = async (req: express.Request, res: express.Response) => {
     const existingUser = await getExistingUserByEmail(email);
 
     if (!existingUser) {
-      return res.status(404).send("User doesn't exists");
+      return res
+        .status(404)
+        .json({ status: 404, message: "User doesn't exists" });
     }
 
     const isMatch = await bcrypt.compare(password, existingUser.password);
 
     if (!isMatch) {
-      return res.status(403).send("Password is incorrect");
+      return res.status(403).json({
+        status: 403,
+        message: "Password is invalid",
+      });
     }
 
     const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
-    return res.status(200).send({
+    return res.status(200).json({
       status: 200,
+      token: token,
       message: "User has been logged In successfully",
-      data: token,
     });
-    // return res.status(200).send("ok");
   } catch (error) {
     console.log(error);
     return res.status(400).send(error);
