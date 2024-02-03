@@ -6,10 +6,12 @@ import { createUser, getExistingUserByEmail } from "../db/userQueries";
 
 export const register = async (req: express.Request, res: express.Response) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, asAdmin } = req.body;
     if (!email || !password || !name) {
       return res.status(204).send("Enter your details");
     }
+
+    console.log(asAdmin);
 
     const existingUser = await getExistingUserByEmail(email);
     // console.log(existingUser);
@@ -40,8 +42,10 @@ export const register = async (req: express.Request, res: express.Response) => {
     const newUser = await createUser({
       name,
       email,
+      role: asAdmin ? "Admin" : "Employee",
       password: hashedPassword,
     });
+    console.log(newUser);
 
     return res
       .status(200)

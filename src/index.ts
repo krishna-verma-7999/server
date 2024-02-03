@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 import authenticationRoutes from "./routes/authentication";
 import userRoutes from "./routes/user";
+import { sendDeadlineNotification } from "./cronjob/deadline-notification";
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(
 );
 app.use(compression());
 app.use(bodyParser.json());
+
+sendDeadlineNotification();
 
 // Routes
 app.use("/api", authenticationRoutes);

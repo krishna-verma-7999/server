@@ -1,4 +1,7 @@
+import * as dotenv from "dotenv";
 import nodemailer from "nodemailer";
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -8,102 +11,49 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const adminToUser = async (
-  adminEmail: string,
+export const UserToAdmin = async (
   userEmail: string,
-  password: string
+  name: string,
+  status: string
 ) => {
   const html = `
-  <div>
-    <h1>Your account has been created</h1>
-    <p>Your details are : </p>
-    <p><strong>Email : </strong> ${userEmail}</p>
-    <p><strong>Password : </strong>${password}</p>
-    <p>Click <a>here</a> to change your password.</p>
-  </div>
-  `;
+    <div>
+      <h1>${name} updated Status of todo to ${status}</h1>
+    </div>
+    `;
   try {
     const info = await transporter.sendMail({
-      from: adminEmail,
-      to: userEmail,
-      subject: "Your account has been created",
+      from: userEmail,
+      to: "karanverma1940@gmail.com",
+      subject: "TODO Status Updated",
       html: html,
     });
 
     console.log("Message sent: ", info.messageId);
   } catch (error) {
-    console.log("Error is nodemailer");
+    console.log("Error is nodemailer", error);
   }
 };
-
-export const UserToAdmin = async (
-  userEmail: string,
+export const DeadlineExceed = async (
   name: string,
-  setIn: string,
-  setOut: string,
-  date: Date
+  userEmail: string,
+  taskName: string
 ) => {
   const html = `
     <div>
-      <h1>${name} user has been checkedout</h1>
-      <p>details are : </p>
-      <p><strong>Set In : </strong> ${setIn}</p>
-      <p><strong>Set Out : </strong>${setOut}</p>
-      <p><strong>Date : </strong>${date}</p>
+      <h1>Hii, ${name} !! Deadline of your task named- ${taskName} has been exceeded.</h1>
     </div>
     `;
   try {
     const info = await transporter.sendMail({
       from: "karanverma1940@gmail.com",
       to: userEmail,
-      subject: "Employee has checkout",
+      subject: "Deadline exceeded",
       html: html,
     });
 
     console.log("Message sent: ", info.messageId);
   } catch (error) {
-    console.log("Error is nodemailer");
-  }
-};
-
-export const birthdayEmail = async (userEmail: string, name: string) => {
-  const html = `
-  <div>
-    <h1>Happy birthday</h1>
-   <p>Congratulations! today is the birthday of ${name}</p>
-  </div>
-  `;
-  try {
-    const info = await transporter.sendMail({
-      from: "karanverma1940@gmail.com",
-      to: userEmail,
-      subject: "Happy birthdayt",
-      html: html,
-    });
-
-    console.log("Message sent: ", info.messageId);
-  } catch (error) {
-    console.log("Error is nodemailer");
-  }
-};
-
-export const aniverseryEmail = async (email: string, name: string) => {
-  const html = `
-  <div>
-    <h1>Anniversary</h1>
-   <p>Congratulations! today is the anniversary of ${name} in our company.</p>
-  </div>
-  `;
-  try {
-    const info = await transporter.sendMail({
-      from: "karanverma1940@gmail.com",
-      to: email,
-      subject: "Anniversary",
-      html: html,
-    });
-
-    console.log("Message sent: ", info.messageId);
-  } catch (error) {
-    console.log("Error is nodemailer");
+    console.log("Error is nodemailer", error);
   }
 };

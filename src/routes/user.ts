@@ -5,7 +5,7 @@ import {
   getUsersByToken,
 } from "../controllers/user";
 
-import { isAuthenticated } from "../middleware";
+import { isAuthenticated, isOwner } from "../middleware";
 import {
   createTaskController,
   getTodoController,
@@ -20,7 +20,7 @@ router.post("/auth/createTask", isAuthenticated, createTaskController);
 
 router.post("/auth/getAllTask", isAuthenticated, getTodoController);
 
-router.post("/auth/updateTask", isAuthenticated, updateTaskController);
+router.post("/auth/updateTask", isAuthenticated, isOwner, updateTaskController);
 
 router.post("/auth/getUserById", isAuthenticated, getUserController);
 

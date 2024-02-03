@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 
+enum Priority {
+  not_hurry,
+  medium,
+  high,
+}
+
 const taskSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -7,7 +13,7 @@ const taskSchema = new mongoose.Schema({
   },
   priority: {
     type: String,
-    enum: ["low", "medium", "high"],
+    enum: Priority,
     default: "medium",
   },
   timeEstimate: {
@@ -28,7 +34,7 @@ const taskSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "in_progress", "completed", "failed"],
+    enum: ["pending", "in_progress", "done", "failed"],
     default: "pending",
   },
 });

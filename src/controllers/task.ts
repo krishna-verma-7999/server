@@ -1,3 +1,4 @@
+import { UserToAdmin } from "../email";
 import { createTask, getAllTask, updateTaskStatus } from "../db/taskQueries";
 import express from "express";
 
@@ -15,7 +16,6 @@ export const createTaskController = async (
         priority: req.body.priority,
         createdBy: req.body.userId,
         assignedTo: req.body.assignedTo,
-        status: "in_progress",
       });
     } else {
       task = await createTask({
@@ -40,6 +40,7 @@ export const getTodoController = async (
 ) => {
   try {
     const tasks = await getAllTask();
+    // console.log(tasks);
     if (!tasks) {
       return res.status(400).send("no task available");
     }
@@ -59,9 +60,11 @@ export const updateTaskController = async (
     console.log(req.body);
     const tasks = await updateTaskStatus(
       req.body.updatedStatus,
-      req.body.assignedId
+      req.body.taskId
     );
-    // console.log(tasks);
+
+    const user: any = tasks.assignedTo;
+    UserToAdmin(user.email, user?.name, req.body.updatedStatus);
     return res
       .status(200)
       .json({ status: 200, message: "Task status updated" });

@@ -7,12 +7,14 @@ export const createTask = async (values: Record<string, any>) => {
 };
 
 export const getAllTask = async () => {
-  return await TaskModel.find();
+  return await TaskModel.find()
+    .sort({ priority: "asc" })
+    .populate("assignedTo");
 };
 
 export const updateTaskStatus = async (status: string, id: string) => {
   return await TaskModel.findOneAndUpdate(
-    { assignedTo: id },
+    { _id: id },
     { status: status }
-  );
+  ).populate("assignedTo");
 };
