@@ -18,3 +18,18 @@ export const updateTaskStatus = async (status: string, id: string) => {
     { status: status }
   ).populate("assignedTo");
 };
+
+export const assignedTaskStatus = async (
+  taskId: string,
+  assignedId: string
+) => {
+  return await TaskModel.findOneAndUpdate(
+    {
+      _id: taskId,
+    },
+    {
+      status: "in_progress",
+      assignedTo: assignedId,
+    }
+  );
+};

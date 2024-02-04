@@ -10,7 +10,7 @@ Assign to employee (optional) ✅
 
 Employee:
 List all tasks ✅
-Assigned to self
+Assigned to self ✅
 Update status ✅
 System:
 Will send email notification if anyone update the status of assigned task ✅

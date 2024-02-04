@@ -8,8 +8,9 @@ export const isOwner = async (
   next: express.NextFunction
 ) => {
   try {
-    // console.log(req.body);
-    if (req.body.assignedToId === req.body.userId) {
+    console.log(req.body);
+
+    if (req.body.assignedToId._id === req.body.userId) {
       next();
       return;
     }

@@ -1,6 +1,12 @@
 import { UserToAdmin } from "../email";
-import { createTask, getAllTask, updateTaskStatus } from "../db/taskQueries";
+import {
+  assignedTaskStatus,
+  createTask,
+  getAllTask,
+  updateTaskStatus,
+} from "../db/taskQueries";
 import express from "express";
+import { getUserById } from "../db/userQueries";
 
 export const createTaskController = async (
   req: express.Request,
@@ -63,13 +69,31 @@ export const updateTaskController = async (
       req.body.taskId
     );
 
-    const user: any = tasks.assignedTo;
+    const user: any = await getUserById(req.body.userId);
+    console.log(user);
     UserToAdmin(user.email, user?.name, req.body.updatedStatus);
     return res
       .status(200)
       .json({ status: 200, message: "Task status updated" });
   } catch (error) {
     console.log("[Update Task Error] : ", error);
+    return res.status(400).send(error);
+  }
+};
+
+export const assignedTodoController = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const tasks = await assignedTaskStatus(req.body.taskId, req.body.userId);
+    const user: any = await getUserById(req.body.userId);
+    UserToAdmin(user.email, user?.name, "In progress");
+    return res
+      .status(200)
+      .json({ status: 200, message: "Task has been assigned" });
+  } catch (error) {
+    console.log("[Assigned Task Error] : ", error);
     return res.status(400).send(error);
   }
 };
